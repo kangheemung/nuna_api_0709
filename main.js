@@ -1,7 +1,7 @@
 url=``;
 let news=[]
 const getLatestNews = async () => {
-    const url = new URL(`https://sweet-conkies-3c5540.netlify.app/`);
+    const url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/`);
     try {
         const response = await fetch(url);
         if (!response.ok) {
