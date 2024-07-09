@@ -7,7 +7,6 @@ const getLatestNews = async () => {
         const data = await response.json();
         console.log(data);
         newsList = data.articles;
-        render();
     } catch (error) {
         console.error('Error fetching or parsing data:', error.message);
     }
