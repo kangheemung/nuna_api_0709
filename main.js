@@ -1,59 +1,73 @@
 //버튼들에 클릭이벤트를 주기
 //카테고리별 뉴스 가져오기
 //그 뉴스를 보여주기렌더
-const menus= document.querySelectorAll(".menus button")
-menus.forEach(menus=>menus.addEventListener("click",(e=>getNewsByCategory(e))))
+// 버튼 클릭 이벤트 추가
+
+const input_go = document.getElementById("input_go");
+const keywordInput = document.getElementById("search-input");
+const menus= document.querySelectorAll(".menus button");
+let keyword = '';
+const getNewsByKeyword = () => {
+    keyword = keywordInput.value; // Update the global 'keyword' variable
+    if (keyword.trim() === '') {
+        alert('Please enter a keyword.'); // Show message if input is empty
+        return; // Stop further execution of the function
+    }
+    if (keyword.trim() !== '') {
+        url.searchParams.set('q', keyword);
+    } else {
+        
+        url.searchParams.delete('q'); // Remove the 'q' parameter if keyword is empty
+    }
+    getNews();
+    keywordInput.value = ''; // Reset the input field value
+};
+
+const getNewsByCategory = (e) => {
+    const category = e.target.textContent.toLowerCase();
+    url.searchParams.set('category', category);
+    url.searchParams.set('q', '');
+    getNews();
+};
+
+
+
+
+menus.forEach(menu => {
+    menu.addEventListener("click", e => getNewsByCategory(e));
+});
+
+// Enterキーが押された時の処理
+keywordInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        getNewsByKeyword();
+    }
+});
+input_go.addEventListener('click', function() {
+    getNewsByKeyword();
+
+});
 console.log(menus);
-let news=[]
-const getLatestNews = async () => {
-    const url = `https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`
+let news=[];
+let url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+
+const getNews = async () => {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url.toString());
         const data = await response.json();
-        console.log(data);
         newsList = data.articles;
+        console.log( newsList);
         render();
     } catch (error) {
         console.error('Error fetching or parsing data:', error.message);
     }
 };
+const getLatestNews = async () => {
+    url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+    url.searchParams.set('q', '');
+    getNews();
+};
 getLatestNews();
-const getNewsByCategory = (e) => {
-    const category = e.target.textContent.toLowerCase();
-      console.log("category", category);
-    const url = new URL(
-        `https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines?category=${category}`
-    );
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Data", data);
-            newsList = data.articles;
-            render()
-        })
-        .catch(error => console.error('Error fetching or parsing data:', error.message));
-};
-
-const getNewsByKeyword = (keyword) => {
-    if (typeof keyword === 'undefined') {
-        const keyword = document.getElementById("search-input").value;
-    }
-
-      console.log("keyword", keyword);
-
-     const url = new URL(` https://newsapi.org/v2/top-headlines?q=${keyword}`);
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Data for keyword", keyword, ":", data);
-            newsList = data.articles;
-            console.log(newsList);
-            render();
-        })
-        .catch(error => console.error('Error fetching or parsing data:', error.message));
-};
-
 
 const render = () => {
     const newsHTML = newsList.map(news => {
@@ -81,3 +95,4 @@ const render = () => {
 
     document.getElementById("news-board").innerHTML = newsHTML;
   };
+  console.log("keyword", keyword);

@@ -40,3 +40,8 @@
     border-bottom: 2px solid  black;
     margin: 2em,2em;
 }
+.keyword_box{
+    margin: 1em;}
+.search-input{
+    border: 1px #000000 ;
+}
