@@ -5,6 +5,9 @@
 const input_go = document.getElementById("input_go");
 const keywordInput = document.getElementById("search-input");
 const menus= document.querySelectorAll(".menus button");
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.querySelector('.sidebar');
+const side_menus = document.querySelectorAll(".side_menus");
 
 let keyword = '';
 
@@ -28,14 +31,28 @@ const getNewsByKeyword = () => {
 
 const getNewsByCategory = (e) => {
     try {
-            const category = e.target.textContent.toLowerCase();
-            url.searchParams.set('category', category);
-            url.searchParams.set('q', '');
-            getNews();
+          const category = e.target.textContent.toLowerCase();
+          url.searchParams.set('category', category);
+          url.searchParams.set('q', '');
+          getNews();
       } catch (error) {
         errorRender(error.message)
     }
 };
+hamburger.addEventListener('click', () => {
+    side_menus.forEach(side_menu => side_menu.classList.toggle('show')); 
+});
+document.querySelector('.hamburger').addEventListener('click', function() {
+    document.querySelector('.side_menus').classList.toggle('opened');
+});
+// Close the sidebar when a button inside side_menus is clicked
+side_menus.forEach(side_menu => side_menu.addEventListener("click", (e) => {
+    getNewsByCategory(e); // Perform category selection action
+    document.querySelector('.side_menus').remove('opened'); // Close the sidebar
+}));
+
+
+
 menus.forEach(menu => {
     menu.addEventListener("click", getNewsByCategory);
 });
@@ -54,16 +71,16 @@ const getNews = async () => {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        
         if (response.status === 200) {
             newsList = data.articles;
-            if (newsList.length === 0) {
+            if (data.articles.length === 0)  {
                 errorRender("No matches for your search");
             } else {
+                newsList = data.articles;
                 render();
             }
         } else {
-            throw new Error(data.message || `Error ${response.status}`);
+            throw new Error(data.message);
         }
     } catch (error) {
         errorRender(error.message);
@@ -106,23 +123,9 @@ const render = () => {
   };
   console.log("keyword", keyword);
 
-    const errorRender = (errorMessage) => {
-        let errorText = '';
-        if(errorMessage.includes('400')) {
-            errorText = 'Bad Request 400 - The request cannot be fulfilled.';
-        } else if(errorMessage.includes('401')) {
-            errorText = 'Unauthorized - Authentication is required.';
-        } else if(errorMessage.includes('402')) {
-            errorText = 'Payment Required - Payment is required.';
-        }else if(errorMessage.includes('429')) {
-            errorText = 'Too many request'
-        } else if(errorMessage.includes('500')) {
-                errorText = 'server error.';
-        }
-        else {
-                errorText = 'No matches for your search.';
-            }
-        const errorHTML = `<div class="alert alert-danger" role="alert">${errorText}</div>`;
-        document.getElementById("news-board").innerHTML = errorHTML;
-    };
+  const errorRender = (errorMessage) => {
+
+    const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
+    document.getElementById("news-board").innerHTML = errorHTML;
+};
 getLatestNews();
