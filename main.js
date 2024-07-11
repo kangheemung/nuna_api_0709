@@ -8,8 +8,32 @@ const menus= document.querySelectorAll(".menus button");
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.querySelector('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
-
+const totalPages=Math.ceil(totalResult/pageSize);
+let closeButton = document.querySelector('.x-close');
+//페이지네이션
+let totalResult = 0;
+//totalResult/PageSize올림
+closeButton.addEventListener("click", menuSlideOff);
 let keyword = '';
+
+// 검색창을 클릭하여 토글하는 기능 추가
+const toggleSearchInput = () => {
+
+    if (isSearchInputVisible) {
+        keywordInput.style.display = 'none'; // Hide element
+        input_go.style.display = 'none';
+    } else {
+        keywordInput.style.display = 'block';
+        input_go.style.display = 'block'; // Show element
+    }
+
+    isSearchInputVisible = !isSearchInputVisible; // Toggle state
+};
+
+
+
+// 나머지 코드는 그대로 유지
+ // 검색창 클릭 이벤트 추가
 
 const getNewsByKeyword = () => {
     keyword = keywordInput.value.trim(); // Update the global 'keyword' variable
@@ -50,9 +74,6 @@ side_menus.forEach(side_menu => side_menu.addEventListener("click", (e) => {
     getNewsByCategory(e); // Perform category selection action
     document.querySelector('.side_menus').remove('opened'); // Close the sidebar
 }));
-
-
-
 menus.forEach(menu => {
     menu.addEventListener("click", getNewsByCategory);
 });
@@ -64,20 +85,34 @@ keywordInput.addEventListener("keypress", function(e) {
 });
 
 input_go.addEventListener('click', getNewsByKeyword);
+let url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+
 //console.log(menus);
 let news=[];
-let url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+
 const getNews = async () => {
     try {
+        let page = 1;
+        const pageSize = 10;
+        const groupSize = 5;
+        url.searchParams.set("page",page);//and page=page
+        url.searchParams.set("pagesize",pageSize);
         const response = await fetch(url);
+
         const data = await response.json();
+        console.log (data);
         if (response.status === 200) {
             newsList = data.articles;
+            totalResult=data.totalResult;
+            render();
+            paginationRender()
+            console.log()
             if (data.articles.length === 0)  {
                 errorRender("No matches for your search");
             } else {
                 newsList = data.articles;
                 render();
+                paginationRender()
             }
         } else {
             throw new Error(data.message);
@@ -128,4 +163,60 @@ const render = () => {
     const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
     document.getElementById("news-board").innerHTML = errorHTML;
 };
+// 'X' 버튼을 클릭하여 사이드 메뉴가 닫히도록 설정
+const closeSidebar = () => {
+    sidebar.classList.remove('opened');
+};
+
+document.querySelector('.side_menus').addEventListener('click', (e) => {
+    if ((e.target.tagName === 'BUTTON' && e.target.textContent.toLowerCase() === 'x') || e.target.classList.contains('x-close')) {
+        closeSidebar();
+    }
+});
+
+
+//페이지네이션 함수
+const paginationRender =()=> {
+    //totalResult
+    //page
+    //pageSize
+    //pageGroup
+    const pageGroup= Math.ceil(page/groupSize);
+    //firstPaget
+    const lastPage = pageGroup*groupSize;
+    // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
+    //firstPage
+    if (lastPage>totalPages){
+        lastPage=totalPages
+    }
+
+    const firstPage=lastPage-(groupSize - 1) <= 0? 1:lastPage-(groupSize - 1);
+    //<nav aria-label="Page navigation example">
+      //  <ul class="pagination justify-content-center">
+        //    <li class="page-item disabled">
+        //    <a class="page-link">Previous</a>
+          //  </li>
+          //  <li class="page-item"><a class="page-link" href="#">1</a></li>
+          //  <li class="page-item"><a class="page-link" href="#">2</a></li>
+          //  <li class="page-item"><a class="page-link" href="#">3</a></li>
+          //  <li class="page-item">
+           // <a class="page-link" href="#">Next</a>
+           // </li>
+        //</ul>
+   // </nav>
+   let paginationHTML = ``
+
+for (let i= firstPage; i<= lastPage; i++){
+
+    paginationHTML += `<li class = "page-item" ${ i === page ? 'active':'' }onclick= "moveToPage(${i})" ><a class="page-link" href="#">${i}</a></li>`
+}
+document.querySelector(".pagination").innerHTML = paginationHTML;
+
+}
+
+const moveToPage = (pageNum) => {
+    console.log("moveToPage",pageNum)
+    page = pageNum;
+    getNews();
+}
 getLatestNews();

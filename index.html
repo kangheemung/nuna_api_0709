@@ -16,21 +16,36 @@
     <section class="container">
         <div class="top_header">
           <div class="sidebar">
-            <button id="hamburger" class="hamburger">&#9776;</button>
-            <div class="side_menus" >
-              <button>Business</button>
-              <button>Entertainment</button>
-              <button>General</button>
-              <button>Health</button>
-              <button>Science</button>
-              <button>Sports</button>
-              <button>Technology</button>
-          </div>
-        <input id="search-input" class ="input_search">
-        <button id = "input_go"class ="btn btn-warning" >GO!</button>
+            <div class="sidebat_top">
+              <button id="hamburger" class="hamburger">&#9776;</button>
+              <i class="fas fa-search" >
+                <img src="icons.png" class="nav-bar-icon fa-solid" style="color: #545454;" onclick="toggleSearchInput()"></img>
+              </i>
+              <div class= "body_search_box ">
+                <input id="search-input" class ="input_search">
+                <button id = "input_go" class ="btn btn-warning" >GO!</button>
+              </div>
+            </div>
+              <div class="side_menus" >
+                <i class="x-close">x</i>
+                <button>Business</button>
+                <button>Entertainment</button>
+                <button>General</button>
+                <button>Health</button>
+                <button>Science</button>
+                <button>Sports</button>
+                <button>Technology</button>
+              </div>
       </div>
         </div>
       <section>
+        <div class="body_search">
+          <img src="icons.png" class="" style="color: #545454;" onclick="toggleSearchInput()"></img>
+          <div class="body_search_box">
+              <input id="search-input" class="input_search">
+              <button id="input_go" class="btn btn-warning">GO!</button>
+          </div>
+        </div>
         <div class="head-line ">
           <svg viewBox="0 0 184 25" fill="#000" aria-hidden="true">
             <path
@@ -39,16 +54,16 @@
             </path>
           </svg>
         </div>
-        <div class="topbar">
-        <div class="menus">
-            <button>Business</button>
-            <button>Entertainment</button>
-            <button>General</button>
-            <button>Health</button>
-            <button>Science</button>
-            <button>Sports</button>
-            <button>Technology</button>
-        </div>
+        <div class="topbar"> 
+          <div class="menus">
+              <button>Business</button>
+              <button>Entertainment</button>
+              <button>General</button>
+              <button>Health</button>
+              <button>Science</button>
+              <button>Sports</button>
+              <button>Technology</button>
+          </div>
         </div>
       </section>
       <section id ="news-board">
@@ -65,6 +80,11 @@
             </div>
         </div>
       </section>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+ 
+        </ul>
+      </nav>
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 
