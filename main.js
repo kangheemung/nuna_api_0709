@@ -8,10 +8,11 @@ const menus= document.querySelectorAll(".menus button");
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.querySelector('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
+
+let totalResult = 0; // Initialize totalResult here
+const pageSize = 10;
 const totalPages=Math.ceil(totalResult/pageSize);
 let closeButton = document.querySelector('.x-close');
-//페이지네이션
-let totalResult = 0;
 //totalResult/PageSize올림
 closeButton.addEventListener("click", menuSlideOff);
 let keyword = '';
