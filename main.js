@@ -2,35 +2,36 @@
 //카테고리별 뉴스 가져오기
 //그 뉴스를 보여주기렌더
 // 버튼 클릭 이벤트 추가
-const input_go = document.getElementById("input_go");
 const keywordInput = document.getElementById("search-input");
+const input_go = document.getElementById("input_go");
+
 const menus= document.querySelectorAll(".menus button");
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.querySelector('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
-
-let totalResult = 0; // Initialize totalResult here
-const pageSize = 10;
-const totalPages=Math.ceil(totalResult/pageSize);
 let closeButton = document.querySelector('.x-close');
+//페이지네이션
 //totalResult/PageSize올림
-closeButton.addEventListener("click", menuSlideOff);
 let keyword = '';
 
 // 검색창을 클릭하여 토글하는 기능 추가
+let isSearchInputVisible = false;
+// Define toggleSearchInput function in the global scope
 const toggleSearchInput = () => {
 
-    if (isSearchInputVisible) {
-        keywordInput.style.display = 'none'; // Hide element
-        input_go.style.display = 'none';
+    if(isSearchInputVisible)  {
+        keywordInput.style.display === "none";
+        input_go.style.display === "none";
     } else {
         keywordInput.style.display = 'block';
-        input_go.style.display = 'block'; // Show element
+        input_go.style.display = 'block';
     }
-
-    isSearchInputVisible = !isSearchInputVisible; // Toggle state
+    isSearchInputVisible = !isSearchInputVisible;
 };
 
+// You can keep the existing code for toggleSearchInput function here
+
+// Ensure the toggleSearchInput function is accessible globally
 
 
 // 나머지 코드는 그대로 유지
@@ -65,7 +66,7 @@ const getNewsByCategory = (e) => {
     }
 };
 hamburger.addEventListener('click', () => {
-    side_menus.forEach(side_menu => side_menu.classList.toggle('show')); 
+    side_menus.forEach(side_menu => side_menu.classList.toggle('show'));
 });
 document.querySelector('.hamburger').addEventListener('click', function() {
     document.querySelector('.side_menus').classList.toggle('opened');
@@ -86,7 +87,7 @@ keywordInput.addEventListener("keypress", function(e) {
 });
 
 input_go.addEventListener('click', getNewsByKeyword);
-let url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
 
 //console.log(menus);
 let news=[];
@@ -94,12 +95,13 @@ let news=[];
 const getNews = async () => {
     try {
         let page = 1;
+
         const pageSize = 10;
         const groupSize = 5;
         url.searchParams.set("page",page);//and page=page
         url.searchParams.set("pagesize",pageSize);
         const response = await fetch(url);
-
+        console.log (response);
         const data = await response.json();
         console.log (data);
         if (response.status === 200) {
@@ -123,9 +125,8 @@ const getNews = async () => {
     }
 };
 
-
 const getLatestNews = async () => {
-            url = new URL(`https://main--kaleidoscopic-beignet-ca4459.netlify.app/top-headlines`);
+            url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
             url.searchParams.set('q', '');
             await getNews();
 };
@@ -177,18 +178,25 @@ document.querySelector('.side_menus').addEventListener('click', (e) => {
 
 
 //페이지네이션 함수
+
+
+
 const paginationRender =()=> {
     //totalResult
     //page
     //pageSize
     //pageGroup
+    const pageSize = 10;
+    let page = 1;
+    const totalPages = Math.ceil(totalResult / pageSize);
+    const groupSize = 5;
     const pageGroup= Math.ceil(page/groupSize);
     //firstPaget
     const lastPage = pageGroup*groupSize;
     // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
     //firstPage
     if (lastPage>totalPages){
-        lastPage=totalPages
+        lastPage=totalPages;
     }
 
     const firstPage=lastPage-(groupSize - 1) <= 0? 1:lastPage-(groupSize - 1);

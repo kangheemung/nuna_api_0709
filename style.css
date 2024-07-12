@@ -84,19 +84,18 @@ margin-top: 1em;
     .topbar {
         display: block; /* Display the topbar on screens 500px and wider */
     }
-    .body_search {
-        display: block; /* Initial width of the sidebar */
-    }
-    .body_search_box{
-        display:  none;
-    }
+    /*. .body_search {
+        display: block; /* Initial width of the sidebar
+    } */
+    /*.body_search_box{
+        display:  none;*/
 
     .sidebar,
     .side_menus{
         display: none; /* Initial width of the sidebar */
     }
     .hamburger {
-        display: none; /* Hide hamburger button on small screens */
+        display:  block;/* Hide hamburger button on small screens */
     }
 
 }
@@ -105,13 +104,14 @@ margin-top: 1em;
         background-color: antiquewhite;
         display: block;
         height: 50px;
-    }
-    .body_search{
-        display: none;
-    }
-    .body_search_box{
         display:  none
     }
+   /*  .body_search{
+        display: none;
+    }
+  .body_search_box{
+        display:  none
+    }*/
 
     .side_menus button{
         margin: 5px;
@@ -144,7 +144,6 @@ margin-top: 1em;
         width: 50px;
         background-color: antiquewhite;
         border: #e2e2e2;
-
         display: block !important; /* Show hamburger button on screens wider than 500px */
     }
 
