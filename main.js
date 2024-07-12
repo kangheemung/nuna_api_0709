@@ -2,14 +2,15 @@
 //카테고리별 뉴스 가져오기
 //그 뉴스를 보여주기렌더
 // 버튼 클릭 이벤트 추가
-const keywordInput = document.getElementById("search-input");
-const input_go = document.getElementById("input_go");
+
 
 const menus= document.querySelectorAll(".menus button");
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.querySelector('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
 let closeButton = document.querySelector('.x-close');
+const keywordInput = document.getElementById("input_search");
+const inputGoButton = document.getElementById("input_go");
 //페이지네이션
 //totalResult/PageSize올림
 let keyword = '';
@@ -18,16 +19,16 @@ let keyword = '';
 let isSearchInputVisible = false;
 // Define toggleSearchInput function in the global scope
 const toggleSearchInput = () => {
-
+    const bodyBox = document.getElementById("body_search_box");
+    console.log(bodyBox); //
     if(isSearchInputVisible)  {
-        keywordInput.style.display === "none";
-        input_go.style.display === "none";
+        bodyBox.style.display = 'none';
     } else {
-        keywordInput.style.display = 'block';
-        input_go.style.display = 'block';
+        bodyBox.style.display = 'block';
     }
     isSearchInputVisible = !isSearchInputVisible;
 };
+
 
 // You can keep the existing code for toggleSearchInput function here
 
@@ -65,10 +66,12 @@ const getNewsByCategory = (e) => {
         errorRender(error.message)
     }
 };
+
 hamburger.addEventListener('click', () => {
     side_menus.forEach(side_menu => side_menu.classList.toggle('show'));
 });
 document.querySelector('.hamburger').addEventListener('click', function() {
+    
     document.querySelector('.side_menus').classList.toggle('opened');
 });
 // Close the sidebar when a button inside side_menus is clicked
@@ -80,13 +83,15 @@ menus.forEach(menu => {
     menu.addEventListener("click", getNewsByCategory);
 });
 // Enterキーが押された時の処理
+
+
 keywordInput.addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         getNewsByKeyword();
     }
 });
 
-input_go.addEventListener('click', getNewsByKeyword);
+//inputGoButton.addEventListener('click', getNewsByKeyword);
 let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
 
 //console.log(menus);
@@ -166,15 +171,22 @@ const render = () => {
     document.getElementById("news-board").innerHTML = errorHTML;
 };
 // 'X' 버튼을 클릭하여 사이드 메뉴가 닫히도록 설정
-const closeSidebar = () => {
-    sidebar.classList.remove('opened');
-};
+// Get the x-close element
+const xCloseElement = document.getElementById('x-close');
 
-document.querySelector('.side_menus').addEventListener('click', (e) => {
-    if ((e.target.tagName === 'BUTTON' && e.target.textContent.toLowerCase() === 'x') || e.target.classList.contains('x-close')) {
-        closeSidebar();
-    }
+// Add click event listener to x-close element
+xCloseElement.addEventListener('click', () => {
+    closeSidebar();
 });
+
+// Function to close the sidebar
+function closeSidebar() {
+    // Hide the sidebar or add any other logic needed to close it
+    const sideMenus = document.querySelector('.side_menus');
+    sideMenus.style.display = 'none'; // You can customize this based on your sidebar implementation
+}
+
+
 
 
 //페이지네이션 함수

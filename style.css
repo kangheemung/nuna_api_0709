@@ -6,11 +6,15 @@
 .head-line svg {
     width: 430px;
 }
-.hamburger{
-    width: 150px;
-}
+
 .sidebat_top{
-    display: flex;}
+    display: flex;
+}
+.x-close{
+    text-align: right;
+    margin-right: 1em;
+    font-size: 32px;
+}
 .menus{
     display: flex;
     justify-content: center;
@@ -84,18 +88,13 @@ margin-top: 1em;
     .topbar {
         display: block; /* Display the topbar on screens 500px and wider */
     }
-    /*. .body_search {
-        display: block; /* Initial width of the sidebar
-    } */
-    /*.body_search_box{
-        display:  none;*/
-
-    .sidebar,
+    .body_search_box {
+        display: none; /* Ensure body_search_box is visible on wider screens */
+    }
+.hamburger{ display: none;
+}
     .side_menus{
         display: none; /* Initial width of the sidebar */
-    }
-    .hamburger {
-        display:  block;/* Hide hamburger button on small screens */
     }
 
 }
@@ -103,15 +102,12 @@ margin-top: 1em;
     .sidebar {
         background-color: antiquewhite;
         display: block;
-        height: 50px;
+        height: 50px;}
+        
+
+ .body_search_box{
         display:  none
     }
-   /*  .body_search{
-        display: none;
-    }
-  .body_search_box{
-        display:  none
-    }*/
 
     .side_menus button{
         margin: 5px;
@@ -141,11 +137,15 @@ margin-top: 1em;
         left: 0; /* Display the sidebar at 0px left position */
     }
     .hamburger {
-        width: 50px;
-        background-color: antiquewhite;
-        border: #e2e2e2;
-        display: block !important; /* Show hamburger button on screens wider than 500px */
+            width: 30px; /* Adjust width as needed to ensure visibility */
+            height: 30px; /* Set a height for the hamburger icon */
+            background-color: transparent; /* Remove any background color */
+            border: none; /* Remove border if unnecessary */
+            display: inline-block; /* Ensure the hamburger icon is displayed inline */
+            font-size: 24px; /* Set an appropriate font size for the icon */
+            cursor: pointer; /* Add cursor pointer for better user interaction */
     }
+
 
 
     .head-line svg {
