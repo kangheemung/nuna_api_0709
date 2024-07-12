@@ -38,6 +38,7 @@ const toggleSearchInput = () => {
 // 나머지 코드는 그대로 유지
  // 검색창 클릭 이벤트 추가
 
+
 const getNewsByKeyword = () => {
     keyword = keywordInput.value.trim(); // Update the global 'keyword' variable
     if (keyword.trim() === '') {
@@ -55,7 +56,7 @@ const getNewsByKeyword = () => {
     getNews();
     keywordInput.value = ''; // Reset the input field value
 };
-
+inputGoButton.addEventListener('click', getNewsByKeyword);
 const getNewsByCategory = (e) => {
     try {
           const category = e.target.textContent.toLowerCase();

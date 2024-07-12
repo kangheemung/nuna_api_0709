@@ -24,15 +24,15 @@
     border-bottom:4px double #000000;
     background-color: antiquewhite;
 }
-.btn-warning{
-    height: 40px;
-    margin-top: 1em;
-
+.input_search {
+    height: 35px;
+    width: 150px;
+    margin-left: 1em;
+    border: 3px solid #ffca2c;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Adding a shadow effect */
 }
-.input_search{
-    height: 40px;
+.sidebar{
     margin: 1em;
-
 }
 .menus button{
     margin: 5px;
@@ -84,7 +84,10 @@
 .topbar {
 margin-top: 1em;
 }
-@media (min-width: 500px) {
+.nav-bar-icon{ 
+    margin: 2px;
+}
+@media (min-width: 600px) {
     .topbar {
         display: block; /* Display the topbar on screens 500px and wider */
     }
@@ -98,12 +101,15 @@ margin-top: 1em;
     }
 
 }
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .sidebar {
-        background-color: antiquewhite;
         display: block;
-        height: 50px;}
-        
+        }
+    .sidebat_top{
+        padding: 10px;
+        height: 60px;
+        background-color: antiquewhite;
+    }
 
  .body_search_box{
         display:  none
@@ -137,15 +143,16 @@ margin-top: 1em;
         left: 0; /* Display the sidebar at 0px left position */
     }
     .hamburger {
-            width: 30px; /* Adjust width as needed to ensure visibility */
-            height: 30px; /* Set a height for the hamburger icon */
-            background-color: transparent; /* Remove any background color */
-            border: none; /* Remove border if unnecessary */
-            display: inline-block; /* Ensure the hamburger icon is displayed inline */
-            font-size: 24px; /* Set an appropriate font size for the icon */
-            cursor: pointer; /* Add cursor pointer for better user interaction */
+        margin: 3px;
+        width: 30px; /* Adjust width as needed to ensure visibility */
+        height: 30px; /* Set a height for the hamburger icon */
+        color: #ffca2c; /* Change the background color to #ffca2c */
+        border: none; /* Remove border if unnecessary */
+        display: inline-block; /* Ensure the hamburger icon is displayed inline */
+        font-size: 24px; /* Set an appropriate font size for the icon */
+        cursor: pointer; /* Add cursor pointer for better user interaction */
     }
-
+    
 
 
     .head-line svg {
