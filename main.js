@@ -3,15 +3,19 @@
 //그 뉴스를 보여주기렌더
 // 버튼 클릭 이벤트 추가
 
-
+let newsList = [];
+let totalResult = 0;
+let page = 1;
+const pageSize = 10;
+const url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
 const menus= document.querySelectorAll(".menus button");
-const hamburger = document.getElementById('hamburger');
 const sidebar = document.querySelector('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
-let closeButton = document.querySelector('.x-close');
+const side_menus_box = document.querySelectorAll(".side_menus_box");
 const keywordInput = document.getElementById("input_search");
 const inputGoButton = document.getElementById("input_go");
-//페이지네이션
+const hamburger = document.getElementById('hamburger');
+const sideMenus = document.querySelector('.side_menus');//페이지네이션
 //totalResult/PageSize올림
 let keyword = '';
 
@@ -29,14 +33,32 @@ const toggleSearchInput = () => {
     isSearchInputVisible = !isSearchInputVisible;
 };
 
+let sidebarIsOpen = false;
 
+const toggleSidebar = () => {
+    sidebarIsOpen = !sidebarIsOpen; // Toggle the sidebarIsOpen variable
+    if (sidebarIsOpen) {
+        sideMenus.style.display = 'none';// Show the sidebar
+    } else {
+
+        sideMenus.style.display = 'block'; // Hide the sidebar
+    }
+};
+
+console.log('Sidebar is open:', sidebarIsOpen);
 // You can keep the existing code for toggleSearchInput function here
+
+// Enterキーが押された時の処理
 
 // Ensure the toggleSearchInput function is accessible globally
 
+// Define the closeSidebar function
 
 // 나머지 코드는 그대로 유지
  // 검색창 클릭 이벤트 추가
+ document.getElementById('x-close').addEventListener('click', function() {
+    document.querySelector('.sidebar').style.display = 'none';
+});
 
 
 const getNewsByKeyword = () => {
@@ -56,35 +78,23 @@ const getNewsByKeyword = () => {
     getNews();
     keywordInput.value = ''; // Reset the input field value
 };
-inputGoButton.addEventListener('click', getNewsByKeyword);
-const getNewsByCategory = (e) => {
+
+const getNewsByCategory = async (e) => {
     try {
           const category = e.target.textContent.toLowerCase();
           url.searchParams.set('category', category);
           url.searchParams.set('q', '');
-          getNews();
+          await getNews();
+          toggleSidebar ()
       } catch (error) {
         errorRender(error.message)
     }
 };
 
-hamburger.addEventListener('click', () => {
-    side_menus.forEach(side_menu => side_menu.classList.toggle('show'));
-});
-document.querySelector('.hamburger').addEventListener('click', function() {
-    
-    document.querySelector('.side_menus').classList.toggle('opened');
-});
-// Close the sidebar when a button inside side_menus is clicked
-side_menus.forEach(side_menu => side_menu.addEventListener("click", (e) => {
-    getNewsByCategory(e); // Perform category selection action
-    document.querySelector('.side_menus').remove('opened'); // Close the sidebar
-}));
-menus.forEach(menu => {
-    menu.addEventListener("click", getNewsByCategory);
-});
-// Enterキーが押された時の処理
 
+
+
+inputGoButton.addEventListener('click', getNewsByKeyword);
 
 keywordInput.addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
@@ -92,16 +102,11 @@ keywordInput.addEventListener("keypress", function(e) {
     }
 });
 
-//inputGoButton.addEventListener('click', getNewsByKeyword);
-let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
 
-//console.log(menus);
-let news=[];
 
 const getNews = async () => {
     try {
         let page = 1;
-
         const pageSize = 10;
         const groupSize = 5;
         url.searchParams.set("page",page);//and page=page
@@ -115,6 +120,7 @@ const getNews = async () => {
             totalResult=data.totalResult;
             render();
             paginationRender()
+            toggleSidebar();
             console.log()
             if (data.articles.length === 0)  {
                 errorRender("No matches for your search");
@@ -122,6 +128,7 @@ const getNews = async () => {
                 newsList = data.articles;
                 render();
                 paginationRender()
+                toggleSidebar();
             }
         } else {
             throw new Error(data.message);
@@ -132,11 +139,46 @@ const getNews = async () => {
 };
 
 const getLatestNews = async () => {
-            url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`);
             url.searchParams.set('q', '');
             await getNews();
 };
-getLatestNews();
+
+
+
+
+menus.forEach(menu => menu.addEventListener("click",(e) => getNewsByCategory(e)));
+
+menus_box.forEach(side_menu => side_menu.addEventListener("click", (e) => {
+    getNewsByCategory(e); // Perform category selection action
+}));
+// Add click event listener to x-close element if it exists
+side_menu_box.forEach(side_menu => side_menu.addEventListener("click", (e) => {
+    getNewsByCategory(e); // Perform category selection action
+    toggleSidebar();
+    document.querySelector('.side_menus').classList.remove('opened');
+     // Toggle the sidebar visibility
+}));
+// Function to close the sidebar
+// Function to toggle the visibility of the sidebar
+hamburger.addEventListener('click', () => {
+    side_menus.forEach(side_menu => side_menu.classList.toggle('side_menus'));
+    toggleSidebar();
+
+});
+
+console.log(hamburger);
+// Function to toggle the visibility of the sidebar
+
+
+
+hamburger.addEventListener('click', () => {
+    toggleSidebar();
+});
+
+// Add click event listener to x-close element if it exists
+// Function to close the sidebar
+
+// Add click event listener to 'x-close' element to close the sidebar
 
 const render = () => {
     const newsHTML = newsList.map(news => {
@@ -167,30 +209,17 @@ const render = () => {
   console.log("keyword", keyword);
 
   const errorRender = (errorMessage) => {
-
+    sidebar.style.display = 'none';
     const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
     document.getElementById("news-board").innerHTML = errorHTML;
 };
 // 'X' 버튼을 클릭하여 사이드 메뉴가 닫히도록 설정
 // Get the x-close element
-const xCloseElement = document.getElementById('x-close');
-
-// Add click event listener to x-close element
-xCloseElement.addEventListener('click', () => {
-    closeSidebar();
-});
-
-// Function to close the sidebar
-function closeSidebar() {
-    // Hide the sidebar or add any other logic needed to close it
-    const sideMenus = document.querySelector('.side_menus');
-    sideMenus.style.display = 'none'; // You can customize this based on your sidebar implementation
-}
-
 
 
 
 //페이지네이션 함수
+
 
 
 
@@ -235,10 +264,13 @@ for (let i= firstPage; i<= lastPage; i++){
 document.querySelector(".pagination").innerHTML = paginationHTML;
 
 }
-
+function clearErrorMessage() {
+    document.getElementById("news-board").innerHTML = ''; // Remove any content inside the news board element
+}
 const moveToPage = (pageNum) => {
     console.log("moveToPage",pageNum)
     page = pageNum;
     getNews();
+    toggleSidebar();
 }
 getLatestNews();

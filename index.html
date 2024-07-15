@@ -16,20 +16,21 @@
     <section class="container">
         <div class="top_header">
           <div class="sidebar">
-            <div class="sidebat_top">
-                <div>
-                <img src="list.svg" id ="hamburger"class="hamburger"><i class="bi bi-list"></i></img>
-                <img src="icons.png" class="nav-bar-icon fa-solid" style="color: #ffca2c; " onclick = "toggleSearchInput()"></img>
+              <div class="sidebat_top">
+                  <div>
+                  <img src="list.svg" id ="hamburger"class="hamburger"><i class="bi bi-list"></i></img>
+                  <img src="icons.png" class="nav-bar-icon fa-solid" style="color: #ffca2c; " onclick = "toggleSearchInput()"></img>
+                  </div>
+                  <div id="body_search_box" class= "body_search_box">
+                  <!-- <div class= "body_search_box "> -->
+                  <input id="input_search" class ="input_search">
+                  <button id = "input_go" class ="btn btn-warning" >GO!</button>
+                  <!-- </div> -->
                 </div>
-                <div id="body_search_box" class= "body_search_box">
-                <!-- <div class= "body_search_box "> -->
-                <input id="input_search" class ="input_search">
-                <button id = "input_go" class ="btn btn-warning" >GO!</button>
-                 <!-- </div> -->
               </div>
-            </div>
               <div class="side_menus" >
-                <i id="x-close" class="x-close" onclick=" closeSidebar()">x</i>
+                <button id="x-close" class="x-close">x</button>
+                <div class="side_menus_box" >
                 <button>Business</button>
                 <button>Entertainment</button>
                 <button>General</button>
@@ -37,13 +38,14 @@
                 <button>Science</button>
                 <button>Sports</button>
                 <button>Technology</button>
+                </div>
               </div>
-      </div>
+          </div>
         </div>
       <section>
         <div class="body_search">
           <div  id="body_search_box" class="body_search_box">
-              <input id="input_search" class="input_search">
+              <input id="input_search" class="input_search" type="text" >
               <button id="input_go" class="btn btn-warning">GO!</button>
           </div>
         </div>
