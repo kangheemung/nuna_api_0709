@@ -256,6 +256,6 @@ const moveToPage = (pageNum) => {
     console.log("moveToPage",pageNum)
     page = pageNum;
     getNews();
-    toggleSidebar();
+    
 }
 getLatestNews();
