@@ -11,8 +11,10 @@
     display: flex;
 }
 .x-close{
+    border: none;
     text-align: right;
     margin-right: 1em;
+    background-color: antiquewhite;
     font-size: 32px;
 }
 .menus{
@@ -46,7 +48,8 @@
 .menus button:hover{
     background-color: rgb(183, 101, 0);
 }
-.news{display: flex;
+.news{
+    display: flex;
     padding: 1em;
  }
 .news_size{
@@ -59,7 +62,8 @@
     margin: 2em,2em;
 }
 .keyword_box{
-    margin: 1em;}
+    margin: 1em;
+}
 .search-input{
     border: 1px #000000 ;
 }
@@ -79,7 +83,7 @@
     background-color: antiquewhite;
 }
 .topbar {
-margin-top: 1em;
+   margin-top: 1em;
 }
 .nav-bar-icon{
     margin: 2px;
@@ -91,12 +95,17 @@ margin-top: 1em;
     .body_search_box {
         display: none; /* Ensure body_search_box is visible on wider screens */
     }
-.hamburger{ display: none;
-}
+    .hamburger{
+        display: none;
+    }
+    .side_menus_box button{
+        padding: 10px;
+        height: 60px;
+        background-color: antiquewhite;
+    }
     .side_menus{
         display: none; /* Initial width of the sidebar */
     }
-
 }
 @media (max-width: 600px) {
     .sidebar {
@@ -107,22 +116,20 @@ margin-top: 1em;
         height: 60px;
         background-color: antiquewhite;
     }
-
- .body_search_box{
-        display:  none
-    }
-
-    .side_menus button{
-        margin: 5px;
-        border: none;
-        background: none;
+   .body_search_box{
+        display: none
     }
     .side_menus {
         display: none;
     }
-
     .show {
         display: flex; /* Show the side menu */
+    }
+    .side_menus_box button{
+        padding: 10px;
+        height: 60px;
+        border: none;
+        background-color: antiquewhite;
     }
 
     .menus button:hover{
@@ -135,8 +142,7 @@ margin-top: 1em;
     .menus button {
         font-size: 16px;
     }
-
-    .sidebar.opened {
+    .sidebar .opened {
         left: 0; /* Display the sidebar at 0px left position */
     }
     .hamburger {
@@ -149,23 +155,17 @@ margin-top: 1em;
         font-size: 24px; /* Set an appropriate font size for the icon */
         cursor: pointer; /* Add cursor pointer for better user interaction */
     }
-    
-
-
     .head-line svg {
         width: 430px; /* Adjust SVG size for screens wider than 500px */
     }
-
     .topbar {
         display: none; /* Hide the topbar on screens below 500px */
     }
-
     .menus button {
         margin: 5px;
         border: none;
         background: none;
     }
-
     .menus button:hover {
         background-color: beige;
         border-radius: 3px;

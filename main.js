@@ -25,14 +25,13 @@ let isSearchInputVisible = false;
 const toggleSearchInput = () => {
     isSearchInputVisible = !isSearchInputVisible;
     const bodyBox = document.getElementById("body_search_box");
-    console.log(bodyBox); //
+    console.log(bodyBox);
     if(isSearchInputVisible)  {
         bodyBox.style.display = 'none';
     } else {
         bodyBox.style.display = 'block';
     }
 };
-
 let sidebarIsOpen = false;
 
 const toggleSidebar = () => {
@@ -47,7 +46,6 @@ const toggleSidebar = () => {
         side_menus.forEach(menu => menu.style.display = 'none');
     });
 };
-
 //サイドバー完成バーグ修正完了
 hamburger.addEventListener('click', (e) => {
     toggleSidebar();
@@ -72,8 +70,6 @@ side_menus_box.forEach(menu => {
 
 // 나머지 코드는 그대로 유지
  // 검색창 클릭 이벤트 추가
-
-
 const getNewsByKeyword = () => {
     keyword = keywordInput.value.trim(); // Update the global 'keyword' variable
     if (keyword.trim() === '') {
@@ -91,7 +87,6 @@ const getNewsByKeyword = () => {
     getNews();
     keywordInput.value = ''; // Reset the input field value
 };
-
 const getNewsByCategory = async (e) => {
     try {
           const category = e.target.textContent.toLowerCase();
@@ -124,7 +119,7 @@ const getNews = async () => {
         console.log (data);
         if (response.status === 200) {
             newsList = data.articles;
-            totalResult=data.totalResult;
+            totalResult = data.totalResult;
             render();
             paginationRender()
             toggleSidebar();
@@ -144,7 +139,6 @@ const getNews = async () => {
         errorRender(error.message);
     }
 };
-
 const getLatestNews = async () => {
             url.searchParams.set('q', '');
             await getNews();
@@ -152,19 +146,12 @@ const getLatestNews = async () => {
 
 menus.forEach(menu => menu.addEventListener("click",(e) => getNewsByCategory(e)));
 // Add click event listener for the hamburger menu button
-
-
-
-
 // Add click event listener to each button in side_menus_box
-
-
 console.log(hamburger);
 // Function to toggle the visibility of the sidebar
 // Add click event listener to x-close element if it exists
 // Function to close the sidebar
 // Add click event listener to 'x-close' element to close the sidebar
-
 const render = () => {
     const newsHTML = newsList.map(news => {
         const imageSrc = news.urlToImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU";
@@ -192,21 +179,13 @@ const render = () => {
     document.getElementById("news-board").innerHTML = newsHTML;
   };
   console.log("keyword", keyword);
-
-
 const errorRender = (errorMessage) => {
     const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
     document.getElementById("news-board").innerHTML = errorHTML;
 };
 // 'X' 버튼을 클릭하여 사이드 메뉴가 닫히도록 설정
 // Get the x-close element
-
-
-
 //페이지네이션 함수
-
-
-
 
 const paginationRender =()=> {
     //totalResult
@@ -222,10 +201,9 @@ const paginationRender =()=> {
     const lastPage = pageGroup*groupSize;
     // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
     //firstPage
-    if (lastPage>totalPages){
-        lastPage=totalPages;
+    if (lastPage > totalPages){
+        lastPage = totalPages;
     }
-
     const firstPage=lastPage-(groupSize - 1) <= 0? 1:lastPage-(groupSize - 1);
     //<nav aria-label="Page navigation example">
       //  <ul class="pagination justify-content-center">
@@ -256,6 +234,5 @@ const moveToPage = (pageNum) => {
     console.log("moveToPage",pageNum)
     page = pageNum;
     getNews();
-    
 }
 getLatestNews();
