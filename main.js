@@ -9,9 +9,9 @@ let page = 1;
 const pageSize = 10;
 let url = new URL(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
 const menus= document.querySelectorAll(".menus button");
-const sidebar = document.querySelector('.sidebar');
+const sidebar = document.querySelectorAll('.sidebar');
 const side_menus = document.querySelectorAll(".side_menus");
-const side_menu_box = document.querySelectorAll('.side_menu_box');
+const side_menus_box = document.querySelectorAll('.side_menus_box button');
 const keywordInput = document.getElementById("input_search");
 const inputGoButton = document.getElementById("input_go");
 const hamburger = document.getElementById('hamburger');
@@ -23,6 +23,7 @@ let keyword = '';
 let isSearchInputVisible = false;
 // Define toggleSearchInput function in the global scope
 const toggleSearchInput = () => {
+    isSearchInputVisible = !isSearchInputVisible;
     const bodyBox = document.getElementById("body_search_box");
     console.log(bodyBox); //
     if(isSearchInputVisible)  {
@@ -30,23 +31,37 @@ const toggleSearchInput = () => {
     } else {
         bodyBox.style.display = 'block';
     }
-    isSearchInputVisible = !isSearchInputVisible;
 };
-
-
-
 
 let sidebarIsOpen = false;
 
 const toggleSidebar = () => {
     sidebarIsOpen = !sidebarIsOpen; // Toggle the sidebarIsOpen variable
+
     if (sidebarIsOpen) {
-        side_menus.style.display = 'none';// Show the sidebar
+        side_menus.forEach(menu => menu.style.display = 'block'); // Hide each sidebar menu
     } else {
-        side_menus.style.display = 'block'; // Hide the sidebar
+        side_menus.forEach(menu => menu.style.display = 'none'); // Show each sidebar menu
     }
+    document.getElementById('x-close').addEventListener('click', function() {
+        side_menus.forEach(menu => menu.style.display = 'none');
+    });
 };
-console.log('Sidebar is open:', sidebarIsOpen);
+
+//サイドバー完成バーグ修正完了
+hamburger.addEventListener('click', (e) => {
+    toggleSidebar();
+});
+
+side_menus_box.forEach(menu => {
+    menu.addEventListener("click", (e) => {
+        e.stopPropagation(); // Stop the event from propagating to the parent elements
+        getNewsByCategory(e);
+        toggleSidebar();
+        getNews();
+        document.querySelector('.side_menus').classList.remove('opened');
+    });
+});
 // You can keep the existing code for toggleSearchInput function here
 
 // Enterキーが押された時の処理
@@ -57,9 +72,6 @@ console.log('Sidebar is open:', sidebarIsOpen);
 
 // 나머지 코드는 그대로 유지
  // 검색창 클릭 이벤트 추가
- document.getElementById('x-close').addEventListener('click', function() {
-    document.querySelector('.side_menus').style.display = 'none';
-});
 
 
 const getNewsByKeyword = () => {
@@ -86,7 +98,6 @@ const getNewsByCategory = async (e) => {
           url.searchParams.set('category', category);
           url.searchParams.set('q', '');
           await getNews();
-          toggleSidebar ();
       } catch (error) {
         errorRender(error.message)
     }
@@ -139,18 +150,15 @@ const getLatestNews = async () => {
             await getNews();
 };
 
-
-
-
 menus.forEach(menu => menu.addEventListener("click",(e) => getNewsByCategory(e)));
 // Add click event listener for the hamburger menu button
 
-hamburger.addEventListener('click', (e) => {
-    side_menus_box.forEach(menus_box => menus_box.addEventListener("click", (e) => getNewsByCategory(e)));
-    getNewsByCategory(e);
-    toggleSidebar();
-    document.querySelector('.side_menus').classList.remove('opened');
-});
+
+
+
+// Add click event listener to each button in side_menus_box
+
+
 console.log(hamburger);
 // Function to toggle the visibility of the sidebar
 // Add click event listener to x-close element if it exists
@@ -185,8 +193,8 @@ const render = () => {
   };
   console.log("keyword", keyword);
 
-  const errorRender = (errorMessage) => {
-    sidebar.style.display = 'none';
+
+const errorRender = (errorMessage) => {
     const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
     document.getElementById("news-board").innerHTML = errorHTML;
 };

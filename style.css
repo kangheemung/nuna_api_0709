@@ -65,9 +65,6 @@
 }
 .side_menus {
     display: none;
-}
-
-.side_menus {
     width: 50%;
     flex-direction: column;
     position: fixed;
@@ -84,7 +81,7 @@
 .topbar {
 margin-top: 1em;
 }
-.nav-bar-icon{ 
+.nav-bar-icon{
     margin: 2px;
 }
 @media (min-width: 600px) {
