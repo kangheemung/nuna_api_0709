@@ -201,7 +201,7 @@ const paginationRender = ()=> {
     const groupSize = 5;
     const pageGroup= Math.ceil(page/groupSize);
     //firstPaget
-    const lastPage = pageGroup * groupSize;
+    let lastPage = pageGroup * groupSize;
     // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
     //firstPage
     if (lastPage > totalPages){
@@ -222,21 +222,21 @@ const paginationRender = ()=> {
            // </li>
         //</ul>
    // </nav>
-   let paginationHTML += `<li class="page-item" onclick = "moveToPage(${page - 1})">
-                            <a class="page-link" aria-label="Previous">
-                             <span aria-hidden="true">&laquo;</span>
-                            </a>
-                          </li>
- `
+let paginationHTML = '';
 
-for (let i= firstPage; i<= lastPage; i++){
-    paginationHTML += `<li class = "page-item" ${ i === page ? 'active':'' } onclick= "moveToPage(${i})" ><a class="page-link">${i}</a></li>`
+
+
+for (let i = firstPage; i <= lastPage; i++) {
+    paginationHTML += `<li class="page-item ${
+        i === page ? 'active' : ''}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
 }
+
+
  paginationHTML += `<li class="page-item"  onclick = "moveToPage(${page + 1})>
                     <a class="page-link" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
+                      <span aria-hidden="true">&raquo;</span>
                     </a>
-                    </li>`
+                    </li>`;
 document.querySelector(".pagination").innerHTML = paginationHTML;
 }
 function clearErrorMessage() {
