@@ -4,9 +4,11 @@
 // 버튼 클릭 이벤트 추가
 const API_KEY = `474e84f656e2471a85bcbe8ad971e094`;
 let newsList = [];
-let totalResult = 0;
+let totalResults = 0;
 let page = 1;
 const pageSize = 10;
+const groupSize = 5;
+
 let url = new URL(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
 const menus= document.querySelectorAll(".menus button");
 const sidebar = document.querySelectorAll('.sidebar');
@@ -105,24 +107,21 @@ keywordInput.addEventListener("keypress", function(e) {
         getNewsByKeyword();
     }
 });
-
 const getNews = async () => {
     try {
-        let page = 1;
-        const pageSize = 10;
-        const groupSize = 5;
-        url.searchParams.set("page",page);//and page=page
+        url.searchParams.set("page",page);//and ＆page=page
         url.searchParams.set("pagesize",pageSize);
+
         const response = await fetch(url);
         console.log (response);
         const data = await response.json();
         console.log (data);
         if (response.status === 200) {
             newsList = data.articles;
-            totalResult = data.totalResult;
+            //page情報
+            totalResult = data.totalResults;
             render();
             paginationRender()
-            toggleSidebar();
             console.log()
             if (data.articles.length === 0)  {
                 errorRender("No matches for your search");
@@ -130,7 +129,7 @@ const getNews = async () => {
                 newsList = data.articles;
                 render();
                 paginationRender()
-                toggleSidebar();
+
             }
         } else {
             throw new Error(data.message);
@@ -186,25 +185,30 @@ const errorRender = (errorMessage) => {
 // 'X' 버튼을 클릭하여 사이드 메뉴가 닫히도록 설정
 // Get the x-close element
 //페이지네이션 함수
+//질문1. 총 결과의 개수 가지고 몇개의 페이지가 필요한지 알 수 있을까?
+//totalPages/groupSize(올림)
 
-const paginationRender =()=> {
-    //totalResult
+//질문2. 현재 페이지를 가지고 몇번째 페이지 그룹인지 어떻게 알 수 있을까?
+//page/groupSize(올림)
+//질문3. 페이지 그룹번호를 가지고 어떻게 그 그룹의 마지막 페이지와 첫번째 페이지를 알 수 있을까?
+
+
+const paginationRender = ()=> {
     //page
     //pageSize
     //pageGroup
-    const pageSize = 10;
-    let page = 1;
     const totalPages = Math.ceil(totalResult / pageSize);
     const groupSize = 5;
     const pageGroup= Math.ceil(page/groupSize);
     //firstPaget
-    const lastPage = pageGroup*groupSize;
+    const lastPage = pageGroup * groupSize;
     // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
     //firstPage
     if (lastPage > totalPages){
         lastPage = totalPages;
     }
-    const firstPage=lastPage-(groupSize - 1) <= 0? 1:lastPage-(groupSize - 1);
+
+    const firstPage = lastPage - (groupSize - 1) <= 0? 1:lastPage - (groupSize - 1);
     //<nav aria-label="Page navigation example">
       //  <ul class="pagination justify-content-center">
         //    <li class="page-item disabled">
@@ -218,20 +222,28 @@ const paginationRender =()=> {
            // </li>
         //</ul>
    // </nav>
-   let paginationHTML = ``
+   let paginationHTML += `<li class="page-item" onclick = "moveToPage(${page - 1})">
+                            <a class="page-link" aria-label="Previous">
+                             <span aria-hidden="true">&laquo;</span>
+                            </a>
+                          </li>
+ `
 
 for (let i= firstPage; i<= lastPage; i++){
-
-    paginationHTML += `<li class = "page-item" ${ i === page ? 'active':'' }onclick= "moveToPage(${i})" ><a class="page-link" href="#">${i}</a></li>`
+    paginationHTML += `<li class = "page-item" ${ i === page ? 'active':'' } onclick= "moveToPage(${i})" ><a class="page-link">${i}</a></li>`
 }
+ paginationHTML += `<li class="page-item"  onclick = "moveToPage(${page + 1})>
+                    <a class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>`
 document.querySelector(".pagination").innerHTML = paginationHTML;
-
 }
 function clearErrorMessage() {
     document.getElementById("news-board").innerHTML = ''; // Remove any content inside the news board element
 }
 const moveToPage = (pageNum) => {
-    console.log("moveToPage",pageNum)
+    console.log("moveToPage",pageNum);
     page = pageNum;
     getNews();
 }
