@@ -6,9 +6,20 @@
 .head-line svg {
     width: 430px;
 }
-
 .sidebat_top{
     display: flex;
+}
+.centered-nav {
+    text-align: center;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-item {
+    list-style: none;
+    /* Adjust the spacing between items as needed */
 }
 .x-close{
     border: none;
@@ -87,6 +98,9 @@
 }
 .nav-bar-icon{
     margin: 2px;
+}
+.page{
+    text-align:center;
 }
 @media (min-width: 600px) {
     .topbar {

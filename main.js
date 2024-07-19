@@ -2,7 +2,7 @@
 //카테고리별 뉴스 가져오기
 //그 뉴스를 보여주기렌더
 // 버튼 클릭 이벤트 추가
-const API_KEY = `474e84f656e2471a85bcbe8ad971e094`;
+const API_KEY = `#`;
 let newsList = [];
 let totalResults = 0;
 let page = 1;
@@ -193,22 +193,25 @@ const errorRender = (errorMessage) => {
 //질문3. 페이지 그룹번호를 가지고 어떻게 그 그룹의 마지막 페이지와 첫번째 페이지를 알 수 있을까?
 
 
+
 const paginationRender = ()=> {
     //page
     //pageSize
     //pageGroup
+    let paginationHTML = ``;
     const totalPages = Math.ceil(totalResult / pageSize);
     const groupSize = 5;
-    const pageGroup= Math.ceil(page/groupSize);
+    const pageGroup= Math.ceil(page/5);
     //firstPaget
-    let lastPage = pageGroup * groupSize;
+    //let lastPage = pageGroup * groupSize;
     // 마지막페이지 그룹이그룹사이즈보다 작다? 마지막페이지는lastPage=totalPage
     //firstPage
+    let lastPage = pageGroup * 5;
+     // 마지막 그룹이 5개 이하이면
     if (lastPage > totalPages){
         lastPage = totalPages;
     }
-
-    const firstPage = lastPage - (groupSize - 1) <= 0? 1:lastPage - (groupSize - 1);
+    let firstPage = lastPage  - 4 <= 0 ? 1 :  lastPage - 4; // 첫그룹이 5이하이면
     //<nav aria-label="Page navigation example">
       //  <ul class="pagination justify-content-center">
         //    <li class="page-item disabled">
@@ -222,29 +225,50 @@ const paginationRender = ()=> {
            // </li>
         //</ul>
    // </nav>
-let paginationHTML = '';
 
 
 
+
+if (page > 1) {
+    // Set page number to 1 if it is less than 1
+ paginationHTML = `<li class="page-item" onclick="moveToPage(1)">
+                        <a class="page-link" aria-label="Previous">
+                       &laquo;&laquo;
+                        </a>
+                      </li>
+                      <li class="page-item" onclick="moveToPage(${page-1})">
+                        <a class="page-link" aria-label="Previous">
+                           &laquo;
+                        </a>
+                      </li>
+                   `;
+}
 for (let i = firstPage; i <= lastPage; i++) {
     paginationHTML += `<li class="page-item ${
         i === page ? 'active' : ''}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
 }
 
 
- paginationHTML += `<li class="page-item"  onclick = "moveToPage(${page + 1})>
-                    <a class="page-link" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    </li>`;
-document.querySelector(".pagination").innerHTML = paginationHTML;
-}
-function clearErrorMessage() {
-    document.getElementById("news-board").innerHTML = ''; // Remove any content inside the news board element
-}
+if (page <totalPages) {
+
+paginationHTML += ` <li class="page-item" onclick=" moveToPage(${page+1})">
+                        <a class="page-link" aria-label="Last">
+                            &raquo;
+                        </a>
+                     </li>
+                    <li class="page-item" onclick="moveToPage(${totalPages})">
+                        <a class="page-link" aria-label="Next">
+                           &raquo;&raquo;
+                        </a>
+                    </li>
+                    `;
+   }
+    document.querySelector(".pagination").innerHTML = paginationHTML;
+
+};
 const moveToPage = (pageNum) => {
     console.log("moveToPage",pageNum);
     page = pageNum;
     getNews();
-}
+};
 getLatestNews();
